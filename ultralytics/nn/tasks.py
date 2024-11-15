@@ -63,7 +63,9 @@ from ultralytics.nn.modules import (
     v10Detect,
     space_to_depth,
     CBAM,
-    CPCA
+    CPCA,
+    SEAM,
+    MultiSEAM
 
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, colorstr, emojis, yaml_load
@@ -1070,6 +1072,9 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             args = [c1, *args[1:]]
         elif m in {CPCA}:#自己加的注意力模块
             args = [ch[f], ch[f]]
+        elif m in {SEAM,MultiSEAM}:
+            c2=ch[f]
+            args=[c2,*args]
         elif m is space_to_depth:
             c2 = 4 * ch[f]    
             # 将输入通道数 ch[f] 增加了四倍

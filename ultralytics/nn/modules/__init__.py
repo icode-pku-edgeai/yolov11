@@ -73,6 +73,8 @@ from .conv import (
     LightConv,
     RepConv,
     SpatialAttention,
+    SEAM,
+    MultiSEAM
 )
 from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment, WorldDetect, v10Detect
 from .transformer import (
@@ -160,5 +162,6 @@ __all__ = (
     "Attention",
     "PSA",
     "space_to_depth",
-    
+    'SEAM',
+    'MultiSEAM'
 )
