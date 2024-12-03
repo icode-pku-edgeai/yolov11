@@ -51,7 +51,9 @@ __all__ = (
     "SCDown",
     "space_to_depth",
     "C2f_StarsBlock",
-    "StarsBlock"
+    "StarsBlock",
+    "C3Star",
+    "C3CIB"
 )
 
 
@@ -1230,3 +1232,20 @@ class C2f_StarsBlock(nn.Module):
         y = list(self.cv1(x).split((self.c, self.c), 1))
         y.extend(m(y[-1]) for m in self.m)
         return self.cv2(torch.cat(y, 1))
+
+class C3Star(C3):
+    """C3 module with GhostBottleneck()."""
+    #带GhostBottleneck的C3，forward在GhostBottleneck里
+    def __init__(self, c1, c2, n=1, shortcut=False, g=1, e=0.5):
+        """Initialize 'SPP' module with various pooling sizes for spatial pyramid pooling."""
+        super().__init__(c1, c2, n, shortcut, g, e)
+        self.c = int(c2 * e)  # hidden channels
+        self.m = nn.Sequential(*(Bottleneck_StarsBlock(self.c, self.c, shortcut, g, k=((3, 3), (3, 3)), e=1.0) for _ in range(n)))
+class C3CIB(C3):
+    """C3 module with GhostBottleneck()."""
+    #带GhostBottleneck的C3，forward在GhostBottleneck里
+    def __init__(self, c1, c2, n=1,shortcut=False, lk=False, g=1, e=0.5):
+        """Initialize 'SPP' module with various pooling sizes for spatial pyramid pooling."""
+        super().__init__(c1, c2, n, shortcut, g, e)
+        self.c= int(c2 * e)  # hidden channels
+        self.m = nn.Sequential(*(CIB(self.c, self.c, shortcut, e=1.0, lk=lk) for _ in range(n)))

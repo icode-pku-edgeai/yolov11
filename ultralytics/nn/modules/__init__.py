@@ -58,7 +58,10 @@ from .block import (
     SCDown,
     space_to_depth,
     C2f_StarsBlock,
-    StarsBlock
+    StarsBlock,
+    C3Star,
+    C3CIB
+
 )
 from .conv import (
     CBAM,
