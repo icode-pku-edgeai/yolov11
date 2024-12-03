@@ -40,19 +40,27 @@ head:
   - [[-1, 2], 1, Concat, [1]] # cat backbone P2
   - [-1, 2, C3k2, [128, False]] # 19 (P2/4-xsmall)
 
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]
+  - [[-1, 0], 1, Concat, [1]] # cat backbone P2
+  - [-1, 2, C3k2, [64, False]] # 22 (P1/4-xxsmall)
+
+  - [-1, 1, Conv, [64, 3, 2]]
+  - [[-1, 19], 1, Concat, [1]] # cat head P3
+  - [-1, 2, C3k2, [128, False]] # 25 (P3/8-small)
+
   - [-1, 1, Conv, [128, 3, 2]]
   - [[-1, 16], 1, Concat, [1]] # cat head P3
-  - [-1, 2, C3k2, [256, False]] # 22 (P3/8-small)
+  - [-1, 2, C3k2, [256, False]] # 28 (P3/8-small)
 #---------------------------------------------
 
   - [-1, 1, Conv, [256, 3, 2]]
   - [[-1, 13], 1, Concat, [1]] # cat head P4
-  - [-1, 2, C3k2, [512, False]] # 25 (P4/16-medium)
+  - [-1, 2, C3k2, [512, False]] # 31 (P4/16-medium)
 
   - [-1, 1, Conv, [512, 3, 2]]
   - [[-1, 10], 1, Concat, [1]] # cat head P5
-  - [-1, 2, C3k2, [1024, True]] # 28 (P5/32-large)
+  - [-1, 2, C3k2, [1024, True]] # 34 (P5/32-large)
 
-  - [[19, 22,25,28], 1, Detect, [nc]] # Detect(P2,P3, P4, P5)
+  - [[ 22,25,28,31,34], 1, Detect, [nc]] # Detect(P1,P2,P3, P4, P5)
 
 
