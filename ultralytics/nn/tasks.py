@@ -65,7 +65,9 @@ from ultralytics.nn.modules import (
     CBAM,
     CPCA,
     SEAM,
-    MultiSEAM
+    MultiSEAM,
+    C2f_StarsBlock,
+    StarsBlock
 
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, colorstr, emojis, yaml_load
@@ -1008,6 +1010,7 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             PSA,
             SCDown,
             C2fCIB,
+            C2f_StarsBlock
         }:#卷积类的配置
             c1, c2 = ch[f], args[0]
             if c2 != nc:  # if c2 not equal to number of classes (i.e. for Classify() output)
@@ -1034,6 +1037,7 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
                 C2fPSA,
                 C2fCIB,
                 C2PSA,
+                C2f_StarsBlock
             }:
                 args.insert(2, n)  # number of repeats
                 n = 1
@@ -1080,6 +1084,8 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             # 将输入通道数 ch[f] 增加了四倍
             # 4 是基于 SpaceToDepth 的 block_size 为 2 的假设。如果 block_size 有所不同，这个数字应该是 block_size 的平方
             # ch 是一个包含前面所有层输出通道数的列表，f 是指向前面某层的索引
+        elif m is StarsBlock:#星模块
+            args = [ch[f]]
         else:
             c2 = ch[f]
 

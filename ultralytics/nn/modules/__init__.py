@@ -56,7 +56,9 @@ from .block import (
     RepVGGDW,
     ResNetLayer,
     SCDown,
-    space_to_depth
+    space_to_depth,
+    C2f_StarsBlock,
+    StarsBlock
 )
 from .conv import (
     CBAM,
